@@ -1,0 +1,19 @@
+{
+  "name": "pandock",
+  "version": "0.0.0",
+  "authors": [
+    "Kevin <mr.kev@me.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io-client": "~1.0.6",
+    "ace": "~1.1.8"
+  }
+}
