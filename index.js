@@ -4,6 +4,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var serveStatic = require('serve-static')
+var config  = require('./config');
 
 // For pandoc things
 var pandoc = require('pandoc');
@@ -14,6 +15,7 @@ var pandoc = require('pandoc');
 //});
 
 app.use(express.static(__dirname + '/public'));
+app.listen(config.port, config.ipaddr);
 
 
 
@@ -35,9 +37,8 @@ io.on('connection', function (socket) {
   });
 });
 
-http.listen(3000, function () {
-  console.log('listening on *:3000');
-})
+
+
 
 
 var render_pandoc = function (doc) {
