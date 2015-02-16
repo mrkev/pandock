@@ -171,7 +171,6 @@ which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
     });
 
     socket.on('--- render_document', function (latex) {
-      console.log('NICE', latex)
       result.getSession().setValue(latex);
     });
 

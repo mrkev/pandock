@@ -15,8 +15,6 @@ var pandoc = require('pandoc');
 //});
 
 app.use(express.static(__dirname + '/public'));
-app.listen(config.port, config.ipaddr);
-
 
 
 var _id = 0;
@@ -38,9 +36,6 @@ io.on('connection', function (socket) {
 });
 
 
-
-
-
 var render_pandoc = function (doc) {
   pandoc.convert(
     'markdown',
@@ -51,5 +46,7 @@ var render_pandoc = function (doc) {
     }
   );
 }
+
+http.listen(config.port, config.ipaddr);
 
 
