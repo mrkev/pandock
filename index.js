@@ -2,7 +2,7 @@
 var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http)
 var serveStatic = require('serve-static')
 var config  = require('./config');
 
@@ -15,7 +15,6 @@ var pandoc = require('pandoc');
 //});
 
 app.use(express.static(__dirname + '/public'));
-
 
 var _id = 0;
 io.on('connection', function (socket) {

@@ -159,7 +159,7 @@ which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
     var editor = ace.edit('editor');
     var result = ace.edit('result');
     var _user  = {};
-    var socket = io();
+    var socket = io.connect();
 
     $('#render').click(function () {
       console.log('yoface')
