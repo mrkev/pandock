@@ -8,7 +8,6 @@ var config  = require('./config');
 
 // For pandoc things
 var pandoc = require('pandoc');
-var pdc = require('pdc');
 
 
 //app.get('/', function (req, res) {
@@ -37,20 +36,19 @@ io.on('connection', function (socket) {
 
 
 var render_pandoc = function (doc) {
-  pdc(doc.content, 'markdown', doc.format, function(err, result) {
-    if (err) console.trace(err);
-    io.emit('--- render_document', result[doc.format])
-  });
+  // pdc(doc.content, 'markdown', doc.format, function(err, result) {
+  //   if (err) console.trace(err);
+  //   io.emit('--- render_document', result[doc.format])
+  // });
 
-
-  // pandoc.convert(
-  //   'markdown',
-  //   doc.content, [ doc.format ], 
-  //   function(result, err) {
-  //     if(err) console.error('pandoc exited with status code ' + err);
-  //     io.emit('--- render_document', result[doc.format])
-  //   }
-  // );
+  pandoc.convert(
+    'markdown',
+    doc.content, [ doc.format ], 
+    function(result, err) {
+      if(err) console.error('pandoc exited with status code ' + err);
+      io.emit('--- render_document', result[doc.format])
+    }
+  );
 }
 
 http.listen(config.port, config.ipaddr);
