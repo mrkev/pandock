@@ -143,16 +143,30 @@ which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
   <select name="format" id="format">
     <option value="latex">latex - ugly but useful</option>
     <option value="html">html - useful but ugly</option>
+    <option value="pdf">pdf - useful but ugly</option>
   </select>
   <button id='render'>Render and blow my mind</button>
+
   
   <h3>Your output whut whut</h3>
   <div id='result' class='ace'></div>
+  <canvas id="the-canvas" style="border:1px solid black;"/>
+
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.js'></script>
   <script src='/bower_components/ace/build/src/ace.js' type='text/javascript' charset='utf-8'></script>
   <script src='/socket.io/socket.io.js'></script>
+
+  <script src="/bower_components/pdfjs-bower/dist/pdf.js"></script>
+  <script src="/bower_components/pdfjs-bower/dist/compatibility.js"></script>
+  <script>PDFJS.workerSrc = "/bower_components/pdfjs-bower/dist/pdf.worker.js";</script>
+  <!-- <script src="lib/fonts.js"></script> -->
+  <!-- <script src="lib/cffStandardStrings.js"></script> -->
+  <!-- <script src="lib/Encodings.js"></script> -->
+  <!-- <script src="lib/glyphlist.js"></script> -->
+
+
   <script>
     'use strict';
     /* global ace, io, $ */
@@ -170,14 +184,54 @@ which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
       });
     });
 
-    socket.on('--- render_document', function (latex) {
-      result.getSession().setValue(latex);
+    socket.on('--- render_document', function (rendered) {
+      console.log(rendered);
+
+
+
+      if (rendered.format === 'pdf') {
+        PDFJS.getDocument({
+          data: rendered.content
+        }).then(function(pdf) {
+          pdf.getPage(1).then(function(page) {
+            var scale = 1.5;
+            var viewport = page.getViewport(scale);
+
+            var canvas = document.getElementById('the-canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+              canvasContext: context,
+              viewport: viewport
+            };
+            page.render(renderContext);
+          });
+
+
+          // you can now use *pdf* here
+        }).catch(function (err) {
+          console.trace(err);
+        })
+        // pdfDocument = new PDFDoc(new Stream(rendered.content));
+        // numPages = pdfDocument.numPages;
+        //document.getElementById("numPages").innerHTML = numPages.toString();
+        //displayPage(pageNum);
+        return;
+      }
+
+      else {
+        result.getSession().setValue(rendered.content);
+      }
     });
 
     socket.on('connect', function (skt) {});
 
     socket.on('user info', function (info) { _user = info; });
 
+
+  
   </script>
   
 </body>
