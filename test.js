@@ -18,7 +18,6 @@ pandoc.on('exit', function(code, signal) {
 
   if(code !== 0) console.error('Code is not 0')
 
-
 });
 
 //pipe them the input
