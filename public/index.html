@@ -85,10 +85,14 @@
       } else {
         $('.mode_pdf').hide();
         $('.mode_txt').show();
+        result.getSession().setMode('ace/mode/' + format.val());
       }
+
     }
 
     up_format_mode();
+    editor.getSession().setMode('ace/mode/markdown');
+
 
     /**
      * Call for a render. of the thing. yeah.
